@@ -1,3 +1,43 @@
 body {
+  display: grid;
+  grid-template-columns: 1fr [start-content] 600px [end-content] 1fr;
   background-color: purple;
+}
+
+body > * {
+  grid-column: start-content / end-content;
+}
+
+main {
+  background-color: white;
+}
+
+details {
+  max-width: 400px;
+  outline: 1px solid red;
+  & p {
+    padding-left: 10px;
+  }
+}
+
+summary {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  outline: 1px solid red;
+  list-style: none;
+  cursor: pointer;
+  &:hover {
+    color: purple;
+  }
+  &::after {
+    content: url(../images/icon-plus.svg);
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+  }
+  [open] &::after {
+    content: url(../images/icon-minus.svg);
+  }
 }
