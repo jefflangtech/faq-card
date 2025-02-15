@@ -1,0 +1,11 @@
+#General thoughts
+This seems like an opportunity to build component up. Each accordion question component is distinct, and it consists of a question and an answer--simple. Then there is the button and the general way that the component itself is laid out. There is a horizontal break in between each one but that can belong to the parent container, which will be responsible for the overall layout. 
+
+#Component up
+- There is a button, which needs to switch back and forth between two states
+- There is a question, on the same level as the button. What happens if the question is more than 1 line long? Where should the text break as it reaches the button? Oh, mobile layout might have clues. Okay, the text definitely breaks as it reaches proximity to the button and when it goes to 2+ lines, the button vertically aligns center with the text. Sounds like a great opportunity for flexbox. 
+- Then there is the answer, which opens up like a, well, accordion but there was another term for it. A "disclosure" element. I did look at the <details> and <summary> elements but the controls for that are on the left and it behaves a little funky...also I don't think that it's style-able. 
+OH NEVERMIND. I can style the widget I just can't animate the transition between open and closed. 
+
+*Even better. This works great because I can change the ::after pseudoelement to have the image as the content, and the <details> element has an [open] state, and I can change the styling--thus the content of the pseudoelement--whether that state is active or not. Applying the flexbox layout on the <summary> element then means I can control how the text and button images behave in their space. This is pretty slick!
+
