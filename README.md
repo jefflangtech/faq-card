@@ -1,6 +1,6 @@
 # JeffLangTech - Recipe page solution
 
-This is a solution to the [Recipe page challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/recipe-page-KiTsR8QQKm). 
+This is a solution to the [FAQ accordion card challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/faq-accordion-wyfFdeBwBz). 
 
 ## Table of contents
 
@@ -20,7 +20,6 @@ This is a solution to the [Recipe page challenge on Frontend Mentor](https://www
 ### Preview
 
 ![Solution Preview](./preview.png)
-I forgot to move the mouse cursor, haha.
 
 ### Links
 
@@ -34,66 +33,58 @@ I forgot to move the mouse cursor, haha.
 - Semantic HTML5 markup
 - CSS custom properties
 - CSS Grid
-- HTML Templates
+- CSS only accordion
 
 ### Step by step
 
-I went big-to-small when approaching the styling. This was the first time that I tried keeping all the layout rules at the document level (in this case I went grid) and plugged in components that had no margin of their own, only concerned with styling their internal contents. 
+This time I built small to big, starting with the accordion components, using the details element to provide the open/close functionality. 
 
-I find it helpful to markup a screenshot of the design:
-![Preview Markup](./design/desktop-preview-markup.png)
-I also missed one grid row, since the hero image needs to occupy its own row, and then I was able to break it out when switching to mobile. I used named grid lines to do that.
+Here's my basic component:
+```html
+<article class="faq-accordion">
+  <details>
+    <summary class="text-title"><h2>Can I use Frontend Mentor projects in my portfolio?</h2></summary>
+    <p>Yes, you can use projects completed on Frontend Mentor in your portfolio. It's an excellent way to showcase your skills to potential employers!</p>
+  </details>
+</article>
+```
+I did try to make it as modular as possible without relying on JS at all. So that meant in my CSS I was using custom variables as well as inheritance from some of the outer structures. One way that the inner part of the details component is adjustable is that the header can be anything from an h2 to an h6 without altering the styling, and this means that it could, theoretically, fit in a larger page with a different heading hierarchy.
 
-Here is all the content in the center column, between [start-col] and [end-col].
-
+Here are the important parts of my CSS:
 ```css
-main {
-  display: grid;
-  grid-template-columns: 
-    [start-left] 5rem 
-    [start-col] 656px [end-col] 
-    5rem [end-right];
-  grid-template-rows: repeat(auto-fit, minmax(100px, auto));
-  row-gap: 4rem;
-}
-main > * {
-  grid-column: start-col / end-col;
-  grid-row: auto;
-}
-```
-
-Breaking the hero image out just means to set the grid-column to [start-left] / [end-right]. Pretty nifty!
-
-Finally, here is my custom element in the JS (I excluded the content setter method). First time using custom elements and I'll probably spend some time exploring those use cases more.
-
-```js
-class RecipeCard extends HTMLElement {
-  constructor() {
-    super();
-    this.template = document.createElement("template");
-    this.template.innerHTML = `
-      <h2 id="card-title"></h2>
-      <div id="card-body">
-        <slot></slot>
-      </div>
-    `;
-  }
-
-  connectedCallback() {
-    this.appendChild(this.template.content.cloneNode(true));
+.faq-accordion {
+  summary {
+    list-style: none;
+    cursor: pointer;
+    &>:is(h2, h3, h4, h5, h6) {
+      font-size: inherit;
+      font-weight: inherit;
+    }
+    &:hover {
+      color: var(--primary-heading-accent);
+    }
+    &::after {
+      content: var(--marker-img-closed);
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      margin-left: 1rem;
+    }
+    [open] &::after {
+      content: var(--marker-img-opened);
+    }
   }
 }
-
-customElements.define('recipe-card', RecipeCard);
 ```
+Note: I should have used rems, not px, on the size of the marker image 🤷‍♂️
 
 ### Continued development
 
-I went light DOM for this project, preferring to let styling for my injected component elements come from global rules. I did structure the CSS in a way that it would have been pretty easy to go shadow DOM and encapsulate component styling, but I'll do that with a future challenge. I also want to try using shadow DOM components that get styling from the global rules, as that sounds like a more complicated challenge.
+Next version I'm making the same thing but with hidden radio inputs so that I can have the open accordion component close when a different one is opened up.
 
 ### Useful resources
 
-- [Kevin Powell: 3 underused CSS Grid Features](https://www.youtube.com/watch?v=ciuZJE74wBA) - This wasn't the original video I saw, but he does still explain how to manipulate content across grid columns using named grid lines. I used this to break out the hero image in the mobile view.
+Just asking GPT lots of questions about what I can and cannot do with the details element. It has some specific functionality but then also some flexibility as long as you are willing to work within it's constraints.
 
 ## Author
 
